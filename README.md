@@ -75,3 +75,51 @@ calculate_SF.m：空间频率SF。
 WIENER_Processing_realimage.m：实际的运动模糊图像的参数估计和维纳滤波。
 WIENER_Processing_realimage2.m：与前面所述的参数估计方法不同，先用前面的方法估计模糊角度，再通过主观比较不同模糊长度和K值下的复原图像，并将复原效果最好的图像对应的模糊长度和K值作为其估计值，最后进行维纳滤波。
 
+
+
+
+译文（Translation）：
+There are three main sections in this project: simulation of the motion blur process for images in the case of uniform linear motion, Wiener filtering and the factors affecting its recovery, and estimation of motion blur parameters.
+
+
+Folders and their code files are described as follows:
+
+1. Blurring:
+
+(1) Simulation of motion blurring of an image in the case of uniform linear motion.
+The code files can be found in the Winner0.m file (first half of the code) in the Wiener Filter folder, or in the two code files in the Blurring folder.
+
+(2) Investigate the effect of blur length and angle on motion blur effects.
+Code files:
+len.m: motion blur image with different blur lengths.
+theta.m: motion blur image with different blur angles. 2.
+
+
+2. Wiener filtering:
+
+(1) Compare the recovery effect of inverse filtering and Wiener filtering.
+Code file:
+winner0.m: Explore the recovery effect of inverse filtering and Wiener filtering with and without Gaussian white noise, respectively. For Wiener filtering, the actual noise to signal ratio NSR and K values are used as the noise to signal ratio respectively.
+
+(2) Investigate the factors affecting the recovery effect of Wiener filtering: The recovery effect of Wiener filtering with different blur lengths, Gaussian white noise variance and noise to signal ratio (K value) were simulated.
+Code files:
+winner_filter.m: function file whose input is the motion blur image, noise variance, blur length, blur angle, and output is the recovered image under inverse filtering and Wiener filtering (with NSR and K values as noise to signal ratio).
+winner_LEN.m: Investigates the effect of blur length on the recovery of inverse and wiener filters.
+winner_noise.m: Investigates the effect of noise variance on the recovery of inverse and Wiener filters.
+winner_K_NSR.m: Investigating the effect of K on the effect of Wiener filtering.
+
+(3) Objective evaluation metrics with reference images.
+calculate_MSE.m: Mean Square Error MSE.
+calculate_SNR.m: signal-to-noise ratio SNR, peak signal-to-noise ratio PSNR, signal-to-noise ratio improvement factor ISNR.
+
+(4) K_NSR_figure.m: objective evaluation index-K curve.
+Calculate the objective evaluation metrics with reference images at different K values: MSE (mean square error), SNR (signal-to-noise ratio), PSNR (peak signal-to-noise ratio), ISNR (signal-to-noise ratio improvement factor), respectively, and plot the four curves of MSE-K, SNR-K, PSNR-K, ISNR-K, respectively.
+
+
+3. Motion blur parameter estimation:
+
+(1) theta_search.m: fuzzy angle estimation.
+The fuzzy angle is mainly estimated by a combination of two Fourier transforms and the normalised Radon transform, the main process of which is as follows:
+(a) For an ideal motion blur image, the blurred image first needs to be Fourier transformed twice and centred to obtain a quadratic spectrogram of the blurred image. Then, the Canny operator is used to perform edge detection on the quadratic spectrogram to obtain the binarized image. Finally, the binarised image is subjected to the normalised Radon transform and an estimate of the blur angle is calculated from the transform result.
+(b) Compared to the ideal motion blur image, there are some improvements in the estimation method of the blur angle of the actual motion blur image: firstly, the cross bright lines in the quadratic spectrogram need to be removed, then the grey scale transformation is performed, and finally the binarisation and normalised Radon transformation are performed to obtain the estimate of the blur angle.
+Illustration: Ideal motion blur image: Referring to the code described earlier, the original image is degraded by MATLAB to obtain an ideal motion blur image, which contains only Gaussian white noise. However, the noise in the actual motion blur image is generally not Gaussian white noise.
