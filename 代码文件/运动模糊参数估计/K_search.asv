@@ -1,0 +1,33 @@
+function K_best=K_search(theta_best,len_best,g,I)
+    
+    options=optimoptions('particleswarm','SwarmSize',50,'HybridFcn','fmincon','MaxIterations',500);
+    
+    if nargin==4
+        MSE=1e8;
+        f=@(K0)MSE_search(I,g,theta_best,len_best,K0);
+    elseif nargin==3
+        f_max=0;        
+        psf=fspecial("motion",len_best,theta_best);
+        f_J=@(K0)deconvwnr(edgetaper(g,psf),psf,K0);
+%         f=@(K0)10000-(0.5*(entropy(f_J(K0))-entropy(g))/entropy(g)+0.3*(calculate_GMG(f_J(K0))...
+%             -calculate_GMG(g))/calculate_GMG(g)+0.2*(calculate_SF(f_J(K0))...
+%             -calculate_SF(g))/calculate_SF(g));
+        f=@(K0)10000-en
+    end
+
+    for j=1:5
+        [K0,f0]=particleswarm(f,1,0,1,options);
+        if nargin==4
+            if f0<MSE
+                K_best=K0;
+                MSE=f0;
+            end
+        elseif nargin==3
+            if f0>f_max
+                K_best=K0;
+                f_max=f0;
+            end
+        end
+    end
+
+end

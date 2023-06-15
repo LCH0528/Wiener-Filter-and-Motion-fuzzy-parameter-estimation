@@ -1,0 +1,11 @@
+function GMG=calculate_GMG(I)
+    [M,N]=size(I);
+%     GMG=sum(sum(sqrt((diff(I).^2+diff(I,1,2).^2)/2)))/((M-1)*(N-1));
+    GMG=0;
+    for i=1:M-1
+        for j=1:N-1
+            GMG
+        end
+    end
+    GMG=
+end

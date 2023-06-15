@@ -1,0 +1,4 @@
+function SF=calculate_SF(I)
+    [M,N]=size(I);
+    RF=sqrt(sum(sum(diff(I,1,2).^2))/(M*N));
+end
